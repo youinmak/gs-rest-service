@@ -1,16 +1,16 @@
 # syntax=docker/dockerfile:1
 
 # Build stage
-FROM eclipse-temurin:17-jdk-jammy AS builder
+FROM eclipse-temurin:25-jdk-jammy AS builder
 WORKDIR /app
 
 # Copy the Java complete project and build an executable jar
 COPY complete ./complete
 WORKDIR /app/complete
-RUN chmod +x mvnw && ./mvnw -q -DskipTests package
+RUN chmod +x mvnw && ./mvnw -q -Dmaven.test.skip=true package
 
 # Runtime stage
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:25-jre-jammy
 WORKDIR /app
 
 # Copy the packaged Spring Boot jar from the builder image
